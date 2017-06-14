@@ -24,15 +24,44 @@ class Draw extends Component {
 }
 
 class Lottery extends Component {
-    //constructor() {
-    //  super();
-    //  this.props = {};
-    //  this.props.txt = "321";
-    //}
+    constructor(props) {
+     super(props);
+
+
+     this.state = {};
+     this.shuffle();
+     // let lines = props.lines;
+     // let index = Math.floor(Math.random(lines.length) * 3)
+     // this.state.line = lines[index]
+
+     }
+     shuffle() {
+         let lines = this.props.lines;
+         let index = Math.floor(Math.random(lines.length) * 3)
+         this.setState({line:lines[index]})
+         //this.state.line = lines[index]
+     }
+    componentDidMount() {
+       console.log("mount")
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+
+    componentWillUnmount() {
+        console.log("unmount")
+        clearInterval(this.timerID);
+    }
+    tick() {
+        console.log("tick")
+        this.shuffle();
+    }
     render() {
-        let lines = this.props.lines;
-        let index = Math.floor(Math.random(lines.length) * 3)
-        return <h1 title={lines[index]} more={5}>{lines[index]}</h1>
+        //this.state = this.props;
+        //let lines = this.state.lines;
+        //let index = Math.floor(Math.random(lines.length) * 3)
+        return <h1 title={this.state.line} more={5}>{this.state.line}</h1>
     }
 }
 Lottery.defaultProps = {
@@ -41,10 +70,12 @@ Lottery.defaultProps = {
 
 class App extends Component {
     render() {
+        let lines = ["Happy new year","Merry Christmas","Better than never"]
         return       (
             <div>
                 <Draw />
-                <Lottery lines={["Happy new year","Merry Christmas","Better than never"]}/>
+
+                <Lottery lines={lines}/>
             </div>
         );
     }
